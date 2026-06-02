@@ -266,14 +266,12 @@
       min-width: 0;
       position: relative;
     }
-    /* imagen real cuando esté disponible */
     .carrusel-slide img {
       width: 100%;
       height: 380px;
       object-fit: cover;
       display: block;
     }
-    /* placeholder cuando no hay imagen */
     .carrusel-placeholder {
       width: 100%;
       height: 380px;
@@ -284,27 +282,12 @@
       gap: 16px;
       background: linear-gradient(135deg, var(--verde-palido) 0%, #d2ecae 100%);
     }
-    .carrusel-placeholder .ph-icon {
-      font-size: 72px;
-      opacity: 0.55;
-    }
-    .carrusel-placeholder .ph-label {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--verde-oscuro);
-      opacity: 0.7;
-    }
-    .carrusel-placeholder .ph-sub {
-      font-size: 12px;
-      color: var(--verde-medio);
-      opacity: 0.8;
-    }
-    /* overlay caption */
+    .carrusel-placeholder .ph-icon { font-size: 72px; opacity: 0.55; }
+    .carrusel-placeholder .ph-label { font-size: 15px; font-weight: 700; color: var(--verde-oscuro); opacity: 0.7; }
+    .carrusel-placeholder .ph-sub { font-size: 12px; color: var(--verde-medio); opacity: 0.8; }
     .slide-caption {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       background: linear-gradient(transparent, rgba(15, 40, 5, 0.82));
       color: #fff;
       padding: 28px 24px 20px;
@@ -321,16 +304,8 @@
       letter-spacing: 0.5px;
       text-transform: uppercase;
     }
-    .slide-caption h4 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .slide-caption p {
-      font-size: 12px;
-      opacity: 0.85;
-    }
-    /* botones navegación */
+    .slide-caption h4 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+    .slide-caption p { font-size: 12px; opacity: 0.85; }
     .carrusel-btn {
       position: absolute;
       top: 50%;
@@ -339,8 +314,7 @@
       background: rgba(255,255,255,0.9);
       border: 1px solid var(--borde);
       border-radius: 50%;
-      width: 44px;
-      height: 44px;
+      width: 44px; height: 44px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -350,23 +324,12 @@
       transition: background 0.2s, box-shadow 0.2s;
       box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     }
-    .carrusel-btn:hover {
-      background: var(--verde-medio);
-      color: #fff;
-      box-shadow: 0 4px 16px rgba(59,109,17,0.25);
-    }
+    .carrusel-btn:hover { background: var(--verde-medio); color: #fff; box-shadow: 0 4px 16px rgba(59,109,17,0.25); }
     .carrusel-btn.prev { left: 14px; }
     .carrusel-btn.next { right: 14px; }
-    /* dots */
-    .carrusel-dots {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 16px;
-    }
+    .carrusel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
     .carrusel-dot {
-      width: 8px;
-      height: 8px;
+      width: 8px; height: 8px;
       border-radius: 50%;
       background: var(--verde-suave);
       border: none;
@@ -374,17 +337,10 @@
       transition: background 0.2s, transform 0.2s;
       padding: 0;
     }
-    .carrusel-dot.active {
-      background: var(--verde-medio);
-      transform: scale(1.35);
-    }
-    /* thumbnails */
+    .carrusel-dot.active { background: var(--verde-medio); transform: scale(1.35); }
     .carrusel-thumbs {
-      display: flex;
-      gap: 10px;
-      margin-top: 14px;
-      overflow-x: auto;
-      padding-bottom: 4px;
+      display: flex; gap: 10px; margin-top: 14px;
+      overflow-x: auto; padding-bottom: 4px;
       scrollbar-width: thin;
       scrollbar-color: var(--verde-suave) transparent;
     }
@@ -392,54 +348,31 @@
     .carrusel-thumbs::-webkit-scrollbar-thumb { background: var(--verde-suave); border-radius: 4px; }
     .thumb-btn {
       flex: 0 0 auto;
-      width: 90px;
-      height: 62px;
-      border-radius: 8px;
-      overflow: hidden;
+      width: 90px; height: 62px;
+      border-radius: 8px; overflow: hidden;
       border: 2px solid transparent;
-      cursor: pointer;
-      background: none;
-      padding: 0;
+      cursor: pointer; background: none; padding: 0;
       transition: border-color 0.2s, opacity 0.2s;
       opacity: 0.65;
     }
-    .thumb-btn.active {
-      border-color: var(--verde-medio);
-      opacity: 1;
-    }
+    .thumb-btn.active { border-color: var(--verde-medio); opacity: 1; }
     .thumb-btn:hover { opacity: 0.9; }
     .thumb-inner {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
       font-size: 26px;
       background: linear-gradient(135deg, var(--verde-palido), var(--verde-suave));
     }
-    .thumb-inner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    /* contador */
+    .thumb-inner img { width: 100%; height: 100%; object-fit: cover; }
     .carrusel-counter {
-      position: absolute;
-      top: 14px;
-      right: 14px;
+      position: absolute; top: 14px; right: 14px;
       background: rgba(15, 40, 5, 0.6);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 20px;
-      z-index: 5;
+      color: #fff; font-size: 12px; font-weight: 600;
+      padding: 4px 10px; border-radius: 20px; z-index: 5;
       backdrop-filter: blur(4px);
     }
-    /* responsive */
     @media (max-width: 600px) {
-      .carrusel-slide img,
-      .carrusel-placeholder { height: 240px; }
+      .carrusel-slide img, .carrusel-placeholder { height: 240px; }
       .carrusel-btn { width: 36px; height: 36px; font-size: 14px; }
       .thumb-btn { width: 70px; height: 48px; }
     }
@@ -448,208 +381,90 @@
     #mision { background: var(--verde-oscuro); color: #fff; }
     #mision .section-title { color: var(--verde-suave); }
     #mision .divider { background: var(--verde-suave); }
-    .mvv-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
+    .mvv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
     .mvv-card {
       background: rgba(255,255,255,0.07);
       border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 14px;
-      padding: 28px 24px;
+      border-radius: 14px; padding: 28px 24px;
     }
-    .mvv-card h3 {
-      font-size: 18px;
-      color: var(--verde-suave);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .mvv-card h3 { font-size: 18px; color: var(--verde-suave); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
     .mvv-card p { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.8; }
     .mvv-card ul { padding-left: 18px; }
     .mvv-card ul li { font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 6px; }
 
     /* ─── USUARIO ─── */
     #usuarios { background: var(--gris-claro); }
-    .user-layout {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 32px;
-      align-items: start;
-    }
+    .user-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 32px; align-items: start; }
     @media (max-width: 720px) { .user-layout { grid-template-columns: 1fr; } }
-    .form-card {
-      background: var(--blanco);
-      border: 1px solid var(--borde);
-      border-radius: 14px;
-      padding: 28px 24px;
-    }
+    .form-card { background: var(--blanco); border: 1px solid var(--borde); border-radius: 14px; padding: 28px 24px; }
     .form-card h3 { font-size: 18px; color: var(--verde-oscuro); margin-bottom: 18px; }
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; font-size: 13px; color: var(--verde-oscuro); margin-bottom: 5px; font-weight: 600; }
     .form-group input, .form-group select, .form-group textarea {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid var(--borde);
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-      transition: border 0.2s;
-      background: var(--blanco);
-      color: var(--gris-texto);
+      width: 100%; padding: 10px 14px;
+      border: 1px solid var(--borde); border-radius: 8px;
+      font-size: 14px; outline: none; transition: border 0.2s;
+      background: var(--blanco); color: var(--gris-texto);
     }
     .form-group input:focus, .form-group select:focus { border-color: var(--verde-claro); }
     .btn-verde {
-      width: 100%;
-      background: var(--verde-medio);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 11px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
+      width: 100%; background: var(--verde-medio); color: #fff;
+      border: none; border-radius: 8px; padding: 11px;
+      font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;
     }
     .btn-verde:hover { background: var(--verde-oscuro); }
-    .nota-demo {
-      font-size: 11px;
-      color: #999;
-      text-align: center;
-      margin-top: 10px;
-    }
+    .nota-demo { font-size: 11px; color: #999; text-align: center; margin-top: 10px; }
 
     /* Historial */
-    .historial-card {
-      background: var(--blanco);
-      border: 1px solid var(--borde);
-      border-radius: 14px;
-      padding: 24px;
-    }
+    .historial-card { background: var(--blanco); border: 1px solid var(--borde); border-radius: 14px; padding: 24px; }
     .historial-card h3 { font-size: 18px; color: var(--verde-oscuro); margin-bottom: 18px; }
-    .servicio-row {
-      border: 1px solid var(--borde);
-      border-radius: 10px;
-      margin-bottom: 16px;
-      overflow: hidden;
-    }
+    .servicio-row { border: 1px solid var(--borde); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
     .servicio-row-header {
-      background: var(--verde-palido);
-      padding: 10px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      background: var(--verde-palido); padding: 10px 16px;
+      display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
     }
     .servicio-row-header strong { color: var(--verde-oscuro); font-size: 14px; }
-    .badge-tipo {
-      background: var(--verde-claro);
-      color: #fff;
-      font-size: 11px;
-      padding: 3px 12px;
-      border-radius: 20px;
-      font-weight: 600;
-    }
+    .badge-tipo { background: var(--verde-claro); color: #fff; font-size: 11px; padding: 3px 12px; border-radius: 20px; font-weight: 600; }
     .badge-fecha { font-size: 12px; color: var(--verde-medio); }
-    .servicio-row-body {
-      padding: 14px 16px;
-      display: grid;
-      grid-template-columns: 90px 1fr 1fr;
-      gap: 14px;
-      align-items: start;
-      font-size: 13px;
-    }
+    .servicio-row-body { padding: 14px 16px; display: grid; grid-template-columns: 90px 1fr 1fr; gap: 14px; align-items: start; font-size: 13px; }
     @media (max-width: 600px) { .servicio-row-body { grid-template-columns: 1fr; } }
     .lote-thumb {
-      width: 90px;
-      height: 80px;
-      border-radius: 8px;
-      object-fit: cover;
+      width: 90px; height: 80px; border-radius: 8px; object-fit: cover;
       background: linear-gradient(135deg, #b5d577, #7aad2f);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      color: var(--verde-oscuro);
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; color: var(--verde-oscuro); flex-shrink: 0;
     }
     .mapa-simulado {
       background: linear-gradient(135deg, #c8e89a, #8fc940);
-      border-radius: 8px;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
+      border-radius: 8px; height: 80px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
     }
     .mapa-simulado::after {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background:
         repeating-linear-gradient(0deg, transparent, transparent 12px, rgba(0,80,0,0.12) 12px, rgba(0,80,0,0.12) 13px),
         repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(0,80,0,0.12) 12px, rgba(0,80,0,0.12) 13px);
     }
-    .mapa-label {
-      position: relative;
-      z-index: 1;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--verde-oscuro);
-      text-align: center;
-    }
+    .mapa-label { position: relative; z-index: 1; font-size: 11px; font-weight: 700; color: var(--verde-oscuro); text-align: center; }
     .informe-box p { font-size: 12px; color: #555; line-height: 1.6; }
     .informe-box strong { color: var(--verde-oscuro); }
 
     /* ─── CONTACTO ─── */
     #contacto { background: var(--blanco); }
-    .contacto-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.5fr;
-      gap: 32px;
-    }
+    .contacto-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 32px; }
     @media (max-width: 720px) { .contacto-grid { grid-template-columns: 1fr; } }
     .contacto-info h3 { font-size: 18px; color: var(--verde-oscuro); margin-bottom: 18px; }
-    .contacto-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-    .contacto-icon {
-      width: 42px;
-      height: 42px;
-      background: var(--verde-palido);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
+    .contacto-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+    .contacto-icon { width: 42px; height: 42px; background: var(--verde-palido); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .contacto-item p { font-size: 13px; color: #666; }
     .contacto-item a { color: var(--verde-medio); text-decoration: none; }
     .contacto-item strong { color: var(--gris-texto); display: block; margin-bottom: 2px; font-size: 14px; }
-    .consulta-card {
-      background: var(--gris-claro);
-      border: 1px solid var(--borde);
-      border-radius: 14px;
-      padding: 28px 24px;
-    }
+    .consulta-card { background: var(--gris-claro); border: 1px solid var(--borde); border-radius: 14px; padding: 28px 24px; }
     .consulta-card h3 { font-size: 18px; color: var(--verde-oscuro); margin-bottom: 18px; }
 
     /* ─── FOOTER ─── */
-    footer {
-      background: var(--verde-oscuro);
-      color: rgba(255,255,255,0.75);
-      text-align: center;
-      padding: 32px 24px;
-      font-size: 13px;
-    }
+    footer { background: var(--verde-oscuro); color: rgba(255,255,255,0.75); text-align: center; padding: 32px 24px; font-size: 13px; }
     footer strong { color: var(--verde-suave); }
     footer p { margin-bottom: 4px; }
 
@@ -719,7 +534,7 @@
       <div class="servicio-card">
         <div class="servicio-icon">&#128167;</div>
         <h3>Pulverización</h3>
-        <p>Aplicación precisa de fitosanitarios, herbicidas y fungicidas reduciendo deriva. </p>
+        <p>Aplicación precisa de fitosanitarios, herbicidas y fungicidas reduciendo deriva.</p>
       </div>
 
       <div class="servicio-card">
@@ -789,23 +604,18 @@
       <div class="carrusel-titulo">📸 Galería de equipos</div>
 
       <div class="carrusel-outer">
-        <!-- Contador -->
         <div class="carrusel-counter" id="carrusel-counter">1 / 4</div>
-
-        <!-- Botón anterior -->
         <button class="carrusel-btn prev" id="btn-prev" aria-label="Imagen anterior">&#8592;</button>
 
-        <!-- Track de slides -->
         <div class="carrusel-track" id="carrusel-track">
 
-          <!-- Slide 1: AGRAS T100 — imagen 1 -->
           <div class="carrusel-slide">
             <img src="agras1.jpg" alt="DJI AGRAS T100 en campo"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
             <div class="carrusel-placeholder" style="display:none;">
               <div class="ph-icon">✈️</div>
               <div class="ph-label">DJI AGRAS T100</div>
-              <div class="ph-sub">Reemplazar con: img/agras1.jpg</div>
+              <div class="ph-sub">agras1.jpg</div>
             </div>
             <div class="slide-caption">
               <span class="cap-badge">Aplicaciones</span>
@@ -814,14 +624,13 @@
             </div>
           </div>
 
-          <!-- Slide 2: AGRAS T100 — imagen 2 -->
           <div class="carrusel-slide">
             <img src="Agras.jpg" alt="DJI AGRAS T100 pulverizando"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
             <div class="carrusel-placeholder" style="display:none;">
               <div class="ph-icon">💧</div>
               <div class="ph-label">DJI AGRAS T100</div>
-              <div class="ph-sub">Reemplazar con: img/agras2.jpg</div>
+              <div class="ph-sub">Agras.jpg</div>
             </div>
             <div class="slide-caption">
               <span class="cap-badge">Aplicaciones</span>
@@ -830,14 +639,13 @@
             </div>
           </div>
 
-          <!-- Slide 3: Mavic 3M — imagen 1 -->
           <div class="carrusel-slide">
             <img src="mavic1.jpg" alt="DJI Mavic 3M monitoreo"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
             <div class="carrusel-placeholder" style="display:none;">
               <div class="ph-icon">📷</div>
               <div class="ph-label">DJI Mavic 3M</div>
-              <div class="ph-sub">Reemplazar con: img/mavic1.jpg</div>
+              <div class="ph-sub">mavic1.jpg</div>
             </div>
             <div class="slide-caption">
               <span class="cap-badge" style="background:#185FA5;">Monitoreo</span>
@@ -846,14 +654,13 @@
             </div>
           </div>
 
-          <!-- Slide 4: Mavic 3M — imagen 2 -->
           <div class="carrusel-slide">
             <img src="mavic2.jpg" alt="DJI Mavic 3M mapa NDVI"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
             <div class="carrusel-placeholder" style="display:none;">
               <div class="ph-icon">🗺️</div>
               <div class="ph-label">DJI Mavic 3M</div>
-              <div class="ph-sub">Reemplazar con: img/mavic2.jpg</div>
+              <div class="ph-sub">mavic2.jpg</div>
             </div>
             <div class="slide-caption">
               <span class="cap-badge" style="background:#185FA5;">Monitoreo</span>
@@ -862,13 +669,11 @@
             </div>
           </div>
 
-        </div><!-- /track -->
+        </div>
 
-        <!-- Botón siguiente -->
         <button class="carrusel-btn next" id="btn-next" aria-label="Imagen siguiente">&#8594;</button>
-      </div><!-- /outer -->
+      </div>
 
-      <!-- Dots -->
       <div class="carrusel-dots" id="carrusel-dots">
         <button class="carrusel-dot active" data-idx="0" aria-label="Slide 1"></button>
         <button class="carrusel-dot" data-idx="1" aria-label="Slide 2"></button>
@@ -876,31 +681,30 @@
         <button class="carrusel-dot" data-idx="3" aria-label="Slide 4"></button>
       </div>
 
-      <!-- Thumbnails -->
       <div class="carrusel-thumbs" id="carrusel-thumbs">
         <button class="thumb-btn active" data-idx="0" aria-label="AGRAS T100 foto 1">
           <div class="thumb-inner">
-            <img src="img/agras1.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='✈️';" />
+            <img src="agras1.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='✈️';" />
           </div>
         </button>
         <button class="thumb-btn" data-idx="1" aria-label="AGRAS T100 foto 2">
           <div class="thumb-inner">
-            <img src="img/agras2.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='💧';" />
+            <img src="Agras.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='💧';" />
           </div>
         </button>
         <button class="thumb-btn" data-idx="2" aria-label="Mavic 3M foto 1">
           <div class="thumb-inner">
-            <img src="img/mavic1.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='📷';" />
+            <img src="mavic1.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='📷';" />
           </div>
         </button>
         <button class="thumb-btn" data-idx="3" aria-label="Mavic 3M foto 2">
           <div class="thumb-inner">
-            <img src="img/mavic2.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='🗺️';" />
+            <img src="mavic2.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='🗺️';" />
           </div>
         </button>
       </div>
 
-    </div><!-- /carrusel-wrapper -->
+    </div>
 
   </div>
 </section>
@@ -915,16 +719,12 @@
 
       <div class="mvv-card">
         <h3>&#127919; Misión</h3>
-        <p>
-          Brindar servicios integrales con drones agrícola.
-        </p>
+        <p>Brindar servicios integrales con drones agrícolas.</p>
       </div>
 
       <div class="mvv-card">
         <h3>&#128200; Visión</h3>
-        <p>
-          Convertirnos en referentes regionales en servicios con drones agrícolas
-        </p>
+        <p>Convertirnos en referentes regionales en servicios con drones agrícolas.</p>
       </div>
 
       <div class="mvv-card">
@@ -1091,37 +891,40 @@
         </div>
       </div>
 
+      <!-- ═══ FORMULARIO CON FORMSPREE INTEGRADO ═══ -->
       <div class="consulta-card">
         <h3>&#128172; Envianos una consulta</h3>
-        <div class="form-group">
-          <label>Nombre completo</label>
-          <input type="text" placeholder="Tu nombre" />
-        </div>
-        <div class="form-group">
-          <label>Correo electrónico</label>
-          <input type="email" placeholder="correo@ejemplo.com" />
-        </div>
-        <div class="form-group">
-          <label>Teléfono (opcional)</label>
-          <input type="tel" placeholder="Ej: 2392 123456" />
-        </div>
-        <div class="form-group">
-          <label>Tipo de servicio de interés</label>
-          <select>
-            <option value="">— Seleccioná —</option>
-            <option>Pulverización</option>
-            <option>Siembra</option>
-            <option>Fertilización</option>
-            <option>Mapeo / Monitoreo NDVI</option>
-            <option>Otro / Consulta general</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Tu consulta</label>
-          <textarea rows="4" placeholder="Contanos sobre tu campo, superficie aproximada, cultivo y lo que necesitás…" style="resize:vertical;"></textarea>
-        </div>
-        <button class="btn-verde" onclick="alert('Consulta enviada. ¡Gracias! (Prototipo — sin envío real.)')">Enviar consulta</button>
-        <p class="nota-demo">&#128274; Prototipo visual — sin envío de datos real</p>
+        <form id="form-contacto" action="https://formspree.io/f/mrednevd" method="POST">
+          <div class="form-group">
+            <label>Nombre completo</label>
+            <input type="text" name="nombre" placeholder="Tu nombre" required />
+          </div>
+          <div class="form-group">
+            <label>Correo electrónico</label>
+            <input type="email" name="email" placeholder="correo@ejemplo.com" required />
+          </div>
+          <div class="form-group">
+            <label>Teléfono (opcional)</label>
+            <input type="tel" name="telefono" placeholder="Ej: 2392 123456" />
+          </div>
+          <div class="form-group">
+            <label>Tipo de servicio de interés</label>
+            <select name="servicio">
+              <option value="">— Seleccioná —</option>
+              <option>Pulverización</option>
+              <option>Siembra</option>
+              <option>Fertilización</option>
+              <option>Mapeo / Monitoreo NDVI</option>
+              <option>Otro / Consulta general</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tu consulta</label>
+            <textarea name="mensaje" rows="4" placeholder="Contanos sobre tu campo, superficie aproximada, cultivo y lo que necesitás…" style="resize:vertical;" required></textarea>
+          </div>
+          <button type="submit" class="btn-verde">Enviar consulta</button>
+          <p id="form-status" style="text-align:center; margin-top:12px; font-size:14px; font-weight:600; color:var(--verde-medio); min-height:20px;"></p>
+        </form>
       </div>
 
     </div>
@@ -1150,17 +953,50 @@
     });
   });
 
+  // ─── FORMSPREE ───
+  const formContacto = document.getElementById('form-contacto');
+  const formStatus   = document.getElementById('form-status');
+  if (formContacto) {
+    formContacto.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btnSubmit = formContacto.querySelector('button[type="submit"]');
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Enviando…';
+      formStatus.textContent = '';
+      try {
+        const response = await fetch('https://formspree.io/f/mrednevd', {
+          method: 'POST',
+          body: new FormData(formContacto),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          formStatus.style.color = 'var(--verde-medio)';
+          formStatus.textContent = '✅ ¡Consulta enviada! Te respondemos a la brevedad.';
+          formContacto.reset();
+        } else {
+          formStatus.style.color = '#c0392b';
+          formStatus.textContent = '❌ Hubo un error. Intentá de nuevo o escribinos por WhatsApp.';
+        }
+      } catch (err) {
+        formStatus.style.color = '#c0392b';
+        formStatus.textContent = '❌ Sin conexión. Intentá de nuevo más tarde.';
+      }
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = 'Enviar consulta';
+    });
+  }
+
   // ─── CARRUSEL ───
   (function () {
-    const track    = document.getElementById('carrusel-track');
-    const counter  = document.getElementById('carrusel-counter');
-    const dots     = document.querySelectorAll('.carrusel-dot');
-    const thumbs   = document.querySelectorAll('.thumb-btn');
-    const btnPrev  = document.getElementById('btn-prev');
-    const btnNext  = document.getElementById('btn-next');
-    const total    = 4;
-    let current    = 0;
-    let autoTimer  = null;
+    const track   = document.getElementById('carrusel-track');
+    const counter = document.getElementById('carrusel-counter');
+    const dots    = document.querySelectorAll('.carrusel-dot');
+    const thumbs  = document.querySelectorAll('.thumb-btn');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const total   = 4;
+    let current   = 0;
+    let autoTimer = null;
 
     function goTo(idx) {
       current = (idx + total) % total;
@@ -1172,15 +1008,9 @@
 
     btnPrev.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
     btnNext.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+    dots.forEach(dot => { dot.addEventListener('click', () => { goTo(+dot.dataset.idx); resetAuto(); }); });
+    thumbs.forEach(thumb => { thumb.addEventListener('click', () => { goTo(+thumb.dataset.idx); resetAuto(); }); });
 
-    dots.forEach(dot => {
-      dot.addEventListener('click', () => { goTo(+dot.dataset.idx); resetAuto(); });
-    });
-    thumbs.forEach(thumb => {
-      thumb.addEventListener('click', () => { goTo(+thumb.dataset.idx); resetAuto(); });
-    });
-
-    // Swipe táctil
     let touchStartX = null;
     track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
     track.addEventListener('touchend', e => {
@@ -1190,27 +1020,18 @@
       touchStartX = null;
     });
 
-    // Scroll horizontal con rueda del mouse sobre el carrusel
     track.parentElement.addEventListener('wheel', e => {
       e.preventDefault();
       goTo(current + (e.deltaX > 0 || e.deltaY > 0 ? 1 : -1));
       resetAuto();
     }, { passive: false });
 
-    // Autoplay cada 5 s
-    function startAuto() {
-      autoTimer = setInterval(() => goTo(current + 1), 5000);
-    }
-    function resetAuto() {
-      clearInterval(autoTimer);
-      startAuto();
-    }
+    function startAuto() { autoTimer = setInterval(() => goTo(current + 1), 5000); }
+    function resetAuto() { clearInterval(autoTimer); startAuto(); }
 
-    // Pausa al pasar el cursor
     track.parentElement.addEventListener('mouseenter', () => clearInterval(autoTimer));
     track.parentElement.addEventListener('mouseleave', startAuto);
 
-    // Teclado (cuando el carrusel tiene el foco)
     document.addEventListener('keydown', e => {
       if (e.key === 'ArrowLeft')  { goTo(current - 1); resetAuto(); }
       if (e.key === 'ArrowRight') { goTo(current + 1); resetAuto(); }
