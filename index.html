@@ -1,398 +1,91 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AgroJuanca Drones</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --verde-oscuro: #27500A;
-      --verde-medio: #3B6D11;
-      --verde-claro: #639922;
-      --verde-suave: #C0DD97;
-      --verde-palido: #EAF3DE;
-      --acento: #4A7C20;
-      --tierra: #8B6914;
-      --blanco: #FFFFFF;
-      --gris-claro: #F5F5F2;
-      --gris-texto: #444441;
+      --verde-oscuro: #27500A; --verde-medio: #3B6D11; --verde-claro: #639922;
+      --verde-suave: #C0DD97; --verde-palido: #EAF3DE; --tierra: #8B6914;
+      --blanco: #FFFFFF; --gris-claro: #F5F5F2; --gris-texto: #444441;
       --borde: rgba(59, 109, 17, 0.2);
     }
-
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      color: var(--gris-texto);
-      background: var(--blanco);
-      line-height: 1.7;
-      font-size: 16px;
-    }
-
-    /* ─── HEADER ─── */
-    header {
-      background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 60%, var(--verde-claro) 100%);
-      padding: 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-    }
-    .header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      padding: 16px 24px;
-    }
-    .header-inner img {
-      height: 64px;
-      width: 64px;
-      object-fit: contain;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.15);
-      padding: 4px;
-    }
-    .logo-placeholder {
-      height: 64px;
-      width: 64px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.2);
-      border: 2px dashed rgba(255,255,255,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: rgba(255,255,255,0.7);
-      text-align: center;
-      flex-shrink: 0;
-    }
-    .header-text h1 {
-      color: #FFFFFF;
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-    .header-text p {
-      color: rgba(255,255,255,0.82);
-      font-size: 13px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    nav {
-      margin-left: auto;
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: rgba(255,255,255,0.9);
-      text-decoration: none;
-      font-size: 13px;
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.3);
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
+    body { font-family: 'Segoe UI', Arial, sans-serif; color: var(--gris-texto); background: var(--blanco); line-height: 1.7; font-size: 16px; }
+    header { background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 60%, var(--verde-claro) 100%); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
+    .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 18px; padding: 16px 24px; }
+    .header-inner img { height: 64px; width: 64px; object-fit: contain; border-radius: 10px; background: rgba(255,255,255,0.15); padding: 4px; }
+    .logo-placeholder { height: 64px; width: 64px; border-radius: 10px; background: rgba(255,255,255,0.2); border: 2px dashed rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; font-size: 11px; color: rgba(255,255,255,0.7); text-align: center; flex-shrink: 0; }
+    .header-text h1 { color: #fff; font-size: 26px; font-weight: 700; }
+    .header-text p { color: rgba(255,255,255,0.82); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+    nav { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+    nav a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 13px; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); transition: background 0.2s; white-space: nowrap; }
     nav a:hover { background: rgba(255,255,255,0.2); }
-
-    /* ─── HERO ─── */
-    .hero {
-      background: linear-gradient(160deg, var(--verde-palido) 0%, #d4ebb0 100%);
-      padding: 70px 24px 60px;
-      text-align: center;
-    }
-    .hero h2 {
-      font-size: 38px;
-      font-weight: 700;
-      color: var(--verde-oscuro);
-      margin-bottom: 16px;
-      line-height: 1.2;
-    }
-    .hero p {
-      max-width: 700px;
-      margin: 0 auto 30px;
-      font-size: 17px;
-      color: var(--verde-medio);
-    }
-    .hero-btn {
-      display: inline-block;
-      background: var(--verde-medio);
-      color: #fff;
-      padding: 13px 32px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
+    .hero { background: linear-gradient(160deg, var(--verde-palido) 0%, #d4ebb0 100%); padding: 70px 24px 60px; text-align: center; }
+    .hero h2 { font-size: 38px; font-weight: 700; color: var(--verde-oscuro); margin-bottom: 16px; line-height: 1.2; }
+    .hero p { max-width: 700px; margin: 0 auto 30px; font-size: 17px; color: var(--verde-medio); }
+    .hero-btn { display: inline-block; background: var(--verde-medio); color: #fff; padding: 13px 32px; border-radius: 30px; text-decoration: none; font-size: 15px; font-weight: 600; transition: background 0.2s; }
     .hero-btn:hover { background: var(--verde-oscuro); }
-
-    /* ─── SECCIONES GENERALES ─── */
     section { padding: 60px 24px; }
     .container { max-width: 1100px; margin: 0 auto; }
-    .section-title {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--verde-oscuro);
-      margin-bottom: 8px;
-    }
-    .section-sub {
-      color: var(--verde-claro);
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 10px;
-    }
-    .divider {
-      width: 50px;
-      height: 3px;
-      background: var(--verde-claro);
-      border-radius: 3px;
-      margin-bottom: 32px;
-    }
-
-    /* ─── SERVICIOS ─── */
+    .section-title { font-size: 28px; font-weight: 700; color: var(--verde-oscuro); margin-bottom: 8px; }
+    .section-sub { color: var(--verde-claro); font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+    .divider { width: 50px; height: 3px; background: var(--verde-claro); border-radius: 3px; margin-bottom: 32px; }
     #servicios { background: var(--gris-claro); }
-    .servicios-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      margin-top: 10px;
-    }
-    .servicio-card {
-      background: var(--blanco);
-      border: 1px solid var(--borde);
-      border-radius: 14px;
-      padding: 28px 22px;
-      text-align: center;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+    .servicios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .servicio-card { background: var(--blanco); border: 1px solid var(--borde); border-radius: 14px; padding: 28px 22px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
     .servicio-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(59,109,17,0.12); }
-    .servicio-icon {
-      width: 56px;
-      height: 56px;
-      background: var(--verde-palido);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 14px;
-      font-size: 24px;
-    }
+    .servicio-icon { width: 56px; height: 56px; background: var(--verde-palido); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 24px; }
     .servicio-card h3 { font-size: 17px; color: var(--verde-oscuro); margin-bottom: 8px; }
     .servicio-card p { font-size: 13px; color: #666; }
-
-    /* ─── DRONES ─── */
-    .drones-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 28px;
-      margin-top: 10px;
-    }
-    .drone-card {
-      border: 1px solid var(--borde);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-    .drone-img {
-      width: 100%;
-      height: 190px;
-      object-fit: cover;
-      background: linear-gradient(135deg, var(--verde-palido), var(--verde-suave));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 70px;
-      color: var(--verde-medio);
-    }
+    .drones-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
+    .drone-card { border: 1px solid var(--borde); border-radius: 14px; overflow: hidden; }
+    .drone-img { width: 100%; height: 190px; background: linear-gradient(135deg, var(--verde-palido), var(--verde-suave)); display: flex; align-items: center; justify-content: center; font-size: 70px; }
     .drone-info { padding: 20px; }
     .drone-info h3 { font-size: 18px; color: var(--verde-oscuro); margin-bottom: 6px; }
-    .drone-info .badge {
-      display: inline-block;
-      background: var(--verde-palido);
-      color: var(--verde-oscuro);
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
+    .drone-info .badge { display: inline-block; background: var(--verde-palido); color: var(--verde-oscuro); font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; font-weight: 600; }
     .drone-info p { font-size: 13px; color: #555; }
-    .drone-specs {
-      margin-top: 12px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
+    .drone-specs { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .spec-item { font-size: 12px; color: #666; }
     .spec-item strong { color: var(--verde-oscuro); display: block; }
-
-    /* ─── CARRUSEL ─── */
-    .carrusel-wrapper {
-      margin-top: 48px;
-      position: relative;
-    }
-    .carrusel-titulo {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--verde-oscuro);
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .carrusel-titulo::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--borde);
-    }
-    .carrusel-outer {
-      position: relative;
-      overflow: hidden;
-      border-radius: 16px;
-      background: var(--verde-palido);
-      border: 1px solid var(--borde);
-    }
-    .carrusel-track {
-      display: flex;
-      transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-      will-change: transform;
-    }
-    .carrusel-slide {
-      flex: 0 0 100%;
-      min-width: 0;
-      position: relative;
-    }
-    .carrusel-slide img {
-      width: 100%;
-      height: 380px;
-      object-fit: cover;
-      display: block;
-    }
-    .carrusel-placeholder {
-      width: 100%;
-      height: 380px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      background: linear-gradient(135deg, var(--verde-palido) 0%, #d2ecae 100%);
-    }
+    .carrusel-wrapper { margin-top: 48px; }
+    .carrusel-titulo { font-size: 18px; font-weight: 700; color: var(--verde-oscuro); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+    .carrusel-titulo::after { content: ''; flex: 1; height: 1px; background: var(--borde); }
+    .carrusel-outer { position: relative; overflow: hidden; border-radius: 16px; background: var(--verde-palido); border: 1px solid var(--borde); }
+    .carrusel-track { display: flex; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1); }
+    .carrusel-slide { flex: 0 0 100%; position: relative; }
+    .carrusel-slide img { width: 100%; height: 380px; object-fit: cover; display: block; }
+    .carrusel-placeholder { width: 100%; height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: linear-gradient(135deg, var(--verde-palido), #d2ecae); }
     .carrusel-placeholder .ph-icon { font-size: 72px; opacity: 0.55; }
     .carrusel-placeholder .ph-label { font-size: 15px; font-weight: 700; color: var(--verde-oscuro); opacity: 0.7; }
-    .carrusel-placeholder .ph-sub { font-size: 12px; color: var(--verde-medio); opacity: 0.8; }
-    .slide-caption {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      background: linear-gradient(transparent, rgba(15, 40, 5, 0.82));
-      color: #fff;
-      padding: 28px 24px 20px;
-    }
-    .slide-caption .cap-badge {
-      display: inline-block;
-      background: var(--verde-claro);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 6px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
+    .slide-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(15,40,5,0.82)); color: #fff; padding: 28px 24px 20px; }
+    .slide-caption .cap-badge { display: inline-block; background: var(--verde-claro); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 6px; text-transform: uppercase; }
     .slide-caption h4 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
     .slide-caption p { font-size: 12px; opacity: 0.85; }
-    .carrusel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
-      background: rgba(255,255,255,0.9);
-      border: 1px solid var(--borde);
-      border-radius: 50%;
-      width: 44px; height: 44px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: var(--verde-oscuro);
-      transition: background 0.2s, box-shadow 0.2s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    }
-    .carrusel-btn:hover { background: var(--verde-medio); color: #fff; box-shadow: 0 4px 16px rgba(59,109,17,0.25); }
+    .carrusel-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(255,255,255,0.9); border: 1px solid var(--borde); border-radius: 50%; width: 44px; height: 44px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--verde-oscuro); transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    .carrusel-btn:hover { background: var(--verde-medio); color: #fff; }
     .carrusel-btn.prev { left: 14px; }
     .carrusel-btn.next { right: 14px; }
     .carrusel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
-    .carrusel-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--verde-suave);
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      padding: 0;
-    }
+    .carrusel-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--verde-suave); border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; padding: 0; }
     .carrusel-dot.active { background: var(--verde-medio); transform: scale(1.35); }
-    .carrusel-thumbs {
-      display: flex; gap: 10px; margin-top: 14px;
-      overflow-x: auto; padding-bottom: 4px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--verde-suave) transparent;
-    }
-    .carrusel-thumbs::-webkit-scrollbar { height: 4px; }
-    .carrusel-thumbs::-webkit-scrollbar-thumb { background: var(--verde-suave); border-radius: 4px; }
-    .thumb-btn {
-      flex: 0 0 auto;
-      width: 90px; height: 62px;
-      border-radius: 8px; overflow: hidden;
-      border: 2px solid transparent;
-      cursor: pointer; background: none; padding: 0;
-      transition: border-color 0.2s, opacity 0.2s;
-      opacity: 0.65;
-    }
+    .carrusel-thumbs { display: flex; gap: 10px; margin-top: 14px; overflow-x: auto; padding-bottom: 4px; }
+    .thumb-btn { flex: 0 0 auto; width: 90px; height: 62px; border-radius: 8px; overflow: hidden; border: 2px solid transparent; cursor: pointer; background: none; padding: 0; opacity: 0.65; transition: border-color 0.2s, opacity 0.2s; }
     .thumb-btn.active { border-color: var(--verde-medio); opacity: 1; }
-    .thumb-btn:hover { opacity: 0.9; }
-    .thumb-inner {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 26px;
-      background: linear-gradient(135deg, var(--verde-palido), var(--verde-suave));
-    }
+    .thumb-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 26px; background: linear-gradient(135deg, var(--verde-palido), var(--verde-suave)); }
     .thumb-inner img { width: 100%; height: 100%; object-fit: cover; }
-    .carrusel-counter {
-      position: absolute; top: 14px; right: 14px;
-      background: rgba(15, 40, 5, 0.6);
-      color: #fff; font-size: 12px; font-weight: 600;
-      padding: 4px 10px; border-radius: 20px; z-index: 5;
-      backdrop-filter: blur(4px);
-    }
-    @media (max-width: 600px) {
-      .carrusel-slide img, .carrusel-placeholder { height: 240px; }
-      .carrusel-btn { width: 36px; height: 36px; font-size: 14px; }
-      .thumb-btn { width: 70px; height: 48px; }
-    }
-
-    /* ─── MISIÓN VISIÓN VALORES ─── */
+    .carrusel-counter { position: absolute; top: 14px; right: 14px; background: rgba(15,40,5,0.6); color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; z-index: 5; }
     #mision { background: var(--verde-oscuro); color: #fff; }
     #mision .section-title { color: var(--verde-suave); }
     #mision .divider { background: var(--verde-suave); }
     .mvv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
-    .mvv-card {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 14px; padding: 28px 24px;
-    }
+    .mvv-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; padding: 28px 24px; }
     .mvv-card h3 { font-size: 18px; color: var(--verde-suave); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
     .mvv-card p { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.8; }
     .mvv-card ul { padding-left: 18px; }
     .mvv-card ul li { font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 6px; }
-
-    /* ─── USUARIO ─── */
     #usuarios { background: var(--gris-claro); }
     .user-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 32px; align-items: start; }
     @media (max-width: 720px) { .user-layout { grid-template-columns: 1fr; } }
@@ -400,57 +93,37 @@
     .form-card h3 { font-size: 18px; color: var(--verde-oscuro); margin-bottom: 18px; }
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; font-size: 13px; color: var(--verde-oscuro); margin-bottom: 5px; font-weight: 600; }
-    .form-group input, .form-group select, .form-group textarea {
-      width: 100%; padding: 10px 14px;
-      border: 1px solid var(--borde); border-radius: 8px;
-      font-size: 14px; outline: none; transition: border 0.2s;
-      background: var(--blanco); color: var(--gris-texto);
-    }
-    .form-group input:focus, .form-group select:focus { border-color: var(--verde-claro); }
-    .btn-verde {
-      width: 100%; background: var(--verde-medio); color: #fff;
-      border: none; border-radius: 8px; padding: 11px;
-      font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;
-    }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--borde); border-radius: 8px; font-size: 14px; outline: none; transition: border 0.2s; background: var(--blanco); color: var(--gris-texto); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--verde-claro); }
+    .btn-verde { width: 100%; background: var(--verde-medio); color: #fff; border: none; border-radius: 8px; padding: 11px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .btn-verde:hover { background: var(--verde-oscuro); }
-    .nota-demo { font-size: 11px; color: #999; text-align: center; margin-top: 10px; }
-
-    /* Historial */
+    .btn-outline { width: 100%; background: transparent; color: var(--verde-medio); border: 2px solid var(--verde-medio); border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+    .btn-outline:hover { background: var(--verde-palido); }
+    .btn-rojo { width: 100%; background: #c0392b; color: #fff; border: none; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+    .auth-status { font-size: 12px; text-align: center; margin-top: 10px; min-height: 18px; font-weight: 600; }
+    .auth-tabs { display: flex; margin-bottom: 20px; border-radius: 8px; overflow: hidden; border: 1px solid var(--borde); }
+    .auth-tab { flex: 1; padding: 10px; background: var(--gris-claro); border: none; cursor: pointer; font-size: 14px; font-weight: 600; color: #888; transition: all 0.2s; }
+    .auth-tab.active { background: var(--verde-medio); color: #fff; }
     .historial-card { background: var(--blanco); border: 1px solid var(--borde); border-radius: 14px; padding: 24px; }
     .historial-card h3 { font-size: 18px; color: var(--verde-oscuro); margin-bottom: 18px; }
     .servicio-row { border: 1px solid var(--borde); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
-    .servicio-row-header {
-      background: var(--verde-palido); padding: 10px 16px;
-      display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
-    }
+    .servicio-row-header { background: var(--verde-palido); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
     .servicio-row-header strong { color: var(--verde-oscuro); font-size: 14px; }
     .badge-tipo { background: var(--verde-claro); color: #fff; font-size: 11px; padding: 3px 12px; border-radius: 20px; font-weight: 600; }
     .badge-fecha { font-size: 12px; color: var(--verde-medio); }
-    .servicio-row-body { padding: 14px 16px; display: grid; grid-template-columns: 90px 1fr 1fr; gap: 14px; align-items: start; font-size: 13px; }
+    .servicio-row-body { padding: 14px 16px; display: grid; grid-template-columns: 100px 1fr 1fr; gap: 14px; align-items: start; font-size: 13px; }
     @media (max-width: 600px) { .servicio-row-body { grid-template-columns: 1fr; } }
-    .lote-thumb {
-      width: 90px; height: 80px; border-radius: 8px; object-fit: cover;
-      background: linear-gradient(135deg, #b5d577, #7aad2f);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 28px; color: var(--verde-oscuro); flex-shrink: 0;
-    }
-    .mapa-simulado {
-      background: linear-gradient(135deg, #c8e89a, #8fc940);
-      border-radius: 8px; height: 80px;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
-    }
-    .mapa-simulado::after {
-      content: ''; position: absolute; inset: 0;
-      background:
-        repeating-linear-gradient(0deg, transparent, transparent 12px, rgba(0,80,0,0.12) 12px, rgba(0,80,0,0.12) 13px),
-        repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(0,80,0,0.12) 12px, rgba(0,80,0,0.12) 13px);
-    }
-    .mapa-label { position: relative; z-index: 1; font-size: 11px; font-weight: 700; color: var(--verde-oscuro); text-align: center; }
+    .lote-thumb { width: 100px; height: 80px; border-radius: 8px; background: linear-gradient(135deg,#b5d577,#7aad2f); display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--verde-oscuro); flex-shrink: 0; overflow: hidden; }
+    .lote-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .mapa-box { border-radius: 8px; height: 80px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg,#c8e89a,#8fc940); overflow: hidden; }
+    .mapa-box img { width: 100%; height: 80px; object-fit: cover; }
     .informe-box p { font-size: 12px; color: #555; line-height: 1.6; }
     .informe-box strong { color: var(--verde-oscuro); }
-
-    /* ─── CONTACTO ─── */
+    .pdf-link { display: inline-block; margin-top: 8px; background: var(--verde-palido); color: var(--verde-oscuro); font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; text-decoration: none; }
+    .pdf-link:hover { background: var(--verde-suave); }
+    .historial-vacio { text-align: center; padding: 40px 20px; color: #999; font-size: 14px; }
+    .login-prompt { text-align: center; padding: 40px 20px; color: #888; font-size: 15px; }
+    .login-prompt strong { color: var(--verde-oscuro); display: block; font-size: 18px; margin-bottom: 8px; }
     #contacto { background: var(--blanco); }
     .contacto-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 32px; }
     @media (max-width: 720px) { .contacto-grid { grid-template-columns: 1fr; } }
@@ -462,27 +135,18 @@
     .contacto-item strong { color: var(--gris-texto); display: block; margin-bottom: 2px; font-size: 14px; }
     .consulta-card { background: var(--gris-claro); border: 1px solid var(--borde); border-radius: 14px; padding: 28px 24px; }
     .consulta-card h3 { font-size: 18px; color: var(--verde-oscuro); margin-bottom: 18px; }
-
-    /* ─── FOOTER ─── */
     footer { background: var(--verde-oscuro); color: rgba(255,255,255,0.75); text-align: center; padding: 32px 24px; font-size: 13px; }
     footer strong { color: var(--verde-suave); }
     footer p { margin-bottom: 4px; }
-
-    /* ─── RESPONSIVE NAV ─── */
-    @media (max-width: 768px) {
-      nav { display: none; }
-      .hero h2 { font-size: 26px; }
-      .header-text h1 { font-size: 19px; }
-    }
+    @media (max-width: 768px) { nav { display: none; } .hero h2 { font-size: 26px; } .header-text h1 { font-size: 19px; } }
+    @media (max-width: 600px) { .carrusel-slide img, .carrusel-placeholder { height: 240px; } }
   </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
 <header>
   <div class="header-inner">
-    <img src="logo.JPG" alt="Logo AgroJuanca Drones"
-         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+    <img src="logo.JPG" alt="Logo AgroJuanca Drones" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
     <div class="logo-placeholder" style="display:none;">LOGO</div>
     <div class="header-text">
       <h1>AgroJuanca Drones</h1>
@@ -497,82 +161,48 @@
   </div>
 </header>
 
-<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
 <div class="hero">
   <h2>Tecnología aérea al servicio del campo</h2>
-  <p>
-    Optimizamos los procesos agronómicos mediante drones de última generación. 
-    Mayor eficiencia, menor impacto ambiental y datos precisos para cada lote.
-  </p>
+  <p>Optimizamos los procesos agronómicos mediante drones de última generación. Mayor eficiencia, menor impacto ambiental y datos precisos para cada lote.</p>
   <a href="#servicios" class="hero-btn">Conocer los servicios</a>
 </div>
 
-<!-- ═══════════════════════════ DESCRIPCIÓN ═══════════════════════════ -->
 <section id="descripcion">
   <div class="container">
-    <p class="section-sub">¿Quienes somos?</p>
+    <p class="section-sub">¿Quiénes somos?</p>
     <h2 class="section-title">Servicio integral con drones agrícolas</h2>
     <div class="divider"></div>
-    <p style="max-width:780px; font-size:16px; color:#444; line-height:1.85;">
-      <strong style="color:var(--verde-oscuro)">AgroJuanca Drones</strong> es un emprendimiento tecnológico orientado 
-      al sector agropecuario que ofrece soluciones de precisión mediante el uso de drones especializados. 
-      Nuestro objetivo es brindar a productores rurales un servicio confiable, eficiente y accesible que potencie la toma de decisiones a partir de datos reales del campo.
-      Trabajamos integrando tecnología de punta con el conocimiento local para maximizar el rendimiento productivo 
-      y reducir el uso de agroquímicos, contribuyendo a una agricultura más sustentable.
+    <p style="max-width:780px;font-size:16px;color:#444;line-height:1.85;">
+      <strong style="color:var(--verde-oscuro)">AgroJuanca Drones</strong> es un emprendimiento tecnológico orientado al sector agropecuario que ofrece soluciones de precisión mediante el uso de drones especializados. Nuestro objetivo es brindar a productores rurales un servicio confiable, eficiente y accesible que potencie la toma de decisiones a partir de datos reales del campo. Trabajamos integrando tecnología de punta con el conocimiento local para maximizar el rendimiento productivo y reducir el uso de agroquímicos, contribuyendo a una agricultura más sustentable.
     </p>
   </div>
 </section>
 
-<!-- ═══════════════════════════ SERVICIOS ═══════════════════════════ -->
 <section id="servicios">
   <div class="container">
     <p class="section-sub">¿Qué ofrecemos?</p>
     <h2 class="section-title">Nuestros servicios</h2>
     <div class="divider"></div>
     <div class="servicios-grid">
-
-      <div class="servicio-card">
-        <div class="servicio-icon">&#128167;</div>
-        <h3>Pulverización</h3>
-        <p>Aplicación precisa de fitosanitarios, herbicidas y fungicidas reduciendo deriva.</p>
-      </div>
-
-      <div class="servicio-card">
-        <div class="servicio-icon">&#127807;</div>
-        <h3>Siembra</h3>
-        <p>Siembra con dron en zonas de difícil acceso, pasturas y cultivos de cobertura.</p>
-      </div>
-
-      <div class="servicio-card">
-        <div class="servicio-icon">&#9881;</div>
-        <h3>Fertilización</h3>
-        <p>Aplicación variable de fertilizantes basada en mapas de prescripción para optimizar el rendimiento por hectárea.</p>
-      </div>
-
-      <div class="servicio-card">
-        <div class="servicio-icon">&#128506;</div>
-        <h3>Mapeo y monitoreo</h3>
-        <p>Relevamientos multiespectrales con cámaras RGB y NDVI para diagnóstico, estrés hídrico y vigor de cultivos.</p>
-      </div>
-
+      <div class="servicio-card"><div class="servicio-icon">&#128167;</div><h3>Pulverización</h3><p>Aplicación precisa de fitosanitarios, herbicidas y fungicidas reduciendo deriva.</p></div>
+      <div class="servicio-card"><div class="servicio-icon">&#127807;</div><h3>Siembra</h3><p>Siembra con dron en zonas de difícil acceso, pasturas y cultivos de cobertura.</p></div>
+      <div class="servicio-card"><div class="servicio-icon">&#9881;</div><h3>Fertilización</h3><p>Aplicación variable de fertilizantes basada en mapas de prescripción para optimizar el rendimiento por hectárea.</p></div>
+      <div class="servicio-card"><div class="servicio-icon">&#128506;</div><h3>Mapeo y monitoreo</h3><p>Relevamientos multiespectrales con cámaras RGB y NDVI para diagnóstico, estrés hídrico y vigor de cultivos.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ DRONES ═══════════════════════════ -->
 <section id="drones">
   <div class="container">
     <p class="section-sub">Equipamiento</p>
     <h2 class="section-title">Flota de drones</h2>
     <div class="divider"></div>
     <div class="drones-grid">
-
       <div class="drone-card">
-        <div class="drone-img" style="font-size:60px;">&#9992;</div>
+        <div class="drone-img">&#9992;</div>
         <div class="drone-info">
-          <span class="badge">Aplicaciones</span>
-          <h3>DJI AGRAS T100</h3>
-          <p>Dron de aplicación agrícola de alta capacidad, diseñado para pulverización, siembra y fertilización a gran escala con máxima eficiencia operativa.</p>
+          <span class="badge">Aplicaciones</span><h3>DJI AGRAS T100</h3>
+          <p>Dron de aplicación agrícola de alta capacidad, diseñado para pulverización, siembra y fertilización a gran escala.</p>
           <div class="drone-specs">
             <div class="spec-item"><strong>Capacidad</strong>100 L depósito</div>
             <div class="spec-item"><strong>Ancho de trabajo</strong>11 m</div>
@@ -581,13 +211,11 @@
           </div>
         </div>
       </div>
-
       <div class="drone-card">
-        <div class="drone-img" style="font-size:60px;">&#128247;</div>
+        <div class="drone-img">&#128247;</div>
         <div class="drone-info">
-          <span class="badge">Monitoreo</span>
-          <h3>DJI Mavic 3M</h3>
-          <p>Dron de monitoreo multiespectral con 5 bandas de captura (RGB, Red Edge, NIR). Ideal para mapeo de lotes, índices de vegetación y diagnóstico agronómico preciso.</p>
+          <span class="badge">Monitoreo</span><h3>DJI Mavic 3M</h3>
+          <p>Dron de monitoreo multiespectral con 5 bandas de captura. Ideal para mapeo de lotes e índices de vegetación.</p>
           <div class="drone-specs">
             <div class="spec-item"><strong>Cámara</strong>20 MP + 5 bandas</div>
             <div class="spec-item"><strong>Autonomía</strong>43 min</div>
@@ -596,153 +224,72 @@
           </div>
         </div>
       </div>
-
     </div>
 
-    <!-- ═══════ CARRUSEL DE IMÁGENES ═══════ -->
     <div class="carrusel-wrapper">
       <div class="carrusel-titulo">📸 Galería de equipos</div>
-
       <div class="carrusel-outer">
         <div class="carrusel-counter" id="carrusel-counter">1 / 4</div>
-        <button class="carrusel-btn prev" id="btn-prev" aria-label="Imagen anterior">&#8592;</button>
-
+        <button class="carrusel-btn prev" id="btn-prev">&#8592;</button>
         <div class="carrusel-track" id="carrusel-track">
-
           <div class="carrusel-slide">
-            <img src="agras1.jpg" alt="DJI AGRAS T100 en campo"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-            <div class="carrusel-placeholder" style="display:none;">
-              <div class="ph-icon">✈️</div>
-              <div class="ph-label">DJI AGRAS T100</div>
-              <div class="ph-sub">agras1.jpg</div>
-            </div>
-            <div class="slide-caption">
-              <span class="cap-badge">Aplicaciones</span>
-              <h4>DJI AGRAS T100 — Vista en vuelo</h4>
-              <p>Capacidad de 100 L · Cobertura &gt;40 ha/hora · Ancho de trabajo 11 m</p>
-            </div>
+            <img src="agras1.jpg" alt="AGRAS T100" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="carrusel-placeholder" style="display:none;"><div class="ph-icon">✈️</div><div class="ph-label">DJI AGRAS T100</div></div>
+            <div class="slide-caption"><span class="cap-badge">Aplicaciones</span><h4>DJI AGRAS T100 — Vista en vuelo</h4><p>Capacidad 100 L · Cobertura >40 ha/hora</p></div>
           </div>
-
           <div class="carrusel-slide">
-            <img src="Agras.jpg" alt="DJI AGRAS T100 pulverizando"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-            <div class="carrusel-placeholder" style="display:none;">
-              <div class="ph-icon">💧</div>
-              <div class="ph-label">DJI AGRAS T100</div>
-              <div class="ph-sub">Agras.jpg</div>
-            </div>
-            <div class="slide-caption">
-              <span class="cap-badge">Aplicaciones</span>
-              <h4>DJI AGRAS T100 — Pulverización en cultivo</h4>
-              <p>Sistema de boquillas de precisión · Reducción de deriva hasta 30%</p>
-            </div>
+            <img src="Agras.jpg" alt="AGRAS pulverizando" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="carrusel-placeholder" style="display:none;"><div class="ph-icon">💧</div><div class="ph-label">DJI AGRAS T100</div></div>
+            <div class="slide-caption"><span class="cap-badge">Aplicaciones</span><h4>DJI AGRAS T100 — Pulverización</h4><p>Reducción de deriva hasta 30%</p></div>
           </div>
-
           <div class="carrusel-slide">
-            <img src="mavic1.jpg" alt="DJI Mavic 3M monitoreo"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-            <div class="carrusel-placeholder" style="display:none;">
-              <div class="ph-icon">📷</div>
-              <div class="ph-label">DJI Mavic 3M</div>
-              <div class="ph-sub">mavic1.jpg</div>
-            </div>
-            <div class="slide-caption">
-              <span class="cap-badge" style="background:#185FA5;">Monitoreo</span>
-              <h4>DJI Mavic 3M — Cámara multiespectral</h4>
-              <p>20 MP · 5 bandas espectrales · RTK integrado · Autonomía 43 min</p>
-            </div>
+            <img src="mavic1.jpg" alt="Mavic 3M" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="carrusel-placeholder" style="display:none;"><div class="ph-icon">📷</div><div class="ph-label">DJI Mavic 3M</div></div>
+            <div class="slide-caption"><span class="cap-badge" style="background:#185FA5;">Monitoreo</span><h4>DJI Mavic 3M — Cámara multiespectral</h4><p>20 MP · 5 bandas · RTK integrado</p></div>
           </div>
-
           <div class="carrusel-slide">
-            <img src="mavic2.jpg" alt="DJI Mavic 3M mapa NDVI"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-            <div class="carrusel-placeholder" style="display:none;">
-              <div class="ph-icon">🗺️</div>
-              <div class="ph-label">DJI Mavic 3M</div>
-              <div class="ph-sub">mavic2.jpg</div>
-            </div>
-            <div class="slide-caption">
-              <span class="cap-badge" style="background:#185FA5;">Monitoreo</span>
-              <h4>DJI Mavic 3M — Relevamiento NDVI</h4>
-              <p>Índices NDVI, NDRE, GNDVI · Resolución 3.2 cm/px · Diagnóstico agronómico</p>
-            </div>
+            <img src="mavic2.jpg" alt="Mavic NDVI" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="carrusel-placeholder" style="display:none;"><div class="ph-icon">🗺️</div><div class="ph-label">DJI Mavic 3M</div></div>
+            <div class="slide-caption"><span class="cap-badge" style="background:#185FA5;">Monitoreo</span><h4>DJI Mavic 3M — Relevamiento NDVI</h4><p>Índices NDVI, NDRE, GNDVI</p></div>
           </div>
-
         </div>
-
-        <button class="carrusel-btn next" id="btn-next" aria-label="Imagen siguiente">&#8594;</button>
+        <button class="carrusel-btn next" id="btn-next">&#8594;</button>
       </div>
-
       <div class="carrusel-dots" id="carrusel-dots">
-        <button class="carrusel-dot active" data-idx="0" aria-label="Slide 1"></button>
-        <button class="carrusel-dot" data-idx="1" aria-label="Slide 2"></button>
-        <button class="carrusel-dot" data-idx="2" aria-label="Slide 3"></button>
-        <button class="carrusel-dot" data-idx="3" aria-label="Slide 4"></button>
+        <button class="carrusel-dot active" data-idx="0"></button>
+        <button class="carrusel-dot" data-idx="1"></button>
+        <button class="carrusel-dot" data-idx="2"></button>
+        <button class="carrusel-dot" data-idx="3"></button>
       </div>
-
-      <div class="carrusel-thumbs" id="carrusel-thumbs">
-        <button class="thumb-btn active" data-idx="0" aria-label="AGRAS T100 foto 1">
-          <div class="thumb-inner">
-            <img src="agras1.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='✈️';" />
-          </div>
-        </button>
-        <button class="thumb-btn" data-idx="1" aria-label="AGRAS T100 foto 2">
-          <div class="thumb-inner">
-            <img src="Agras.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='💧';" />
-          </div>
-        </button>
-        <button class="thumb-btn" data-idx="2" aria-label="Mavic 3M foto 1">
-          <div class="thumb-inner">
-            <img src="mavic1.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='📷';" />
-          </div>
-        </button>
-        <button class="thumb-btn" data-idx="3" aria-label="Mavic 3M foto 2">
-          <div class="thumb-inner">
-            <img src="mavic2.jpg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='🗺️';" />
-          </div>
-        </button>
+      <div class="carrusel-thumbs">
+        <button class="thumb-btn active" data-idx="0"><div class="thumb-inner"><img src="agras1.jpg" onerror="this.style.display='none';this.parentElement.innerHTML='✈️';" /></div></button>
+        <button class="thumb-btn" data-idx="1"><div class="thumb-inner"><img src="Agras.jpg" onerror="this.style.display='none';this.parentElement.innerHTML='💧';" /></div></button>
+        <button class="thumb-btn" data-idx="2"><div class="thumb-inner"><img src="mavic1.jpg" onerror="this.style.display='none';this.parentElement.innerHTML='📷';" /></div></button>
+        <button class="thumb-btn" data-idx="3"><div class="thumb-inner"><img src="mavic2.jpg" onerror="this.style.display='none';this.parentElement.innerHTML='🗺️';" /></div></button>
       </div>
-
     </div>
-
   </div>
 </section>
 
-<!-- ═══════════════════════════ MISIÓN VISIÓN VALORES ═══════════════════════════ -->
 <section id="mision">
   <div class="container">
-    <p class="section-sub" style="color:var(--verde-suave); opacity:0.8;">Identidad institucional</p>
+    <p class="section-sub" style="color:var(--verde-suave);opacity:0.8;">Identidad institucional</p>
     <h2 class="section-title">Misión, visión y valores</h2>
     <div class="divider" style="background:var(--verde-suave);"></div>
     <div class="mvv-grid">
-
-      <div class="mvv-card">
-        <h3>&#127919; Misión</h3>
-        <p>Brindar servicios integrales con drones agrícolas.</p>
-      </div>
-
-      <div class="mvv-card">
-        <h3>&#128200; Visión</h3>
-        <p>Convertirnos en referentes regionales en servicios con drones agrícolas.</p>
-      </div>
-
-      <div class="mvv-card">
-        <h3>&#11088; Valores</h3>
-        <ul>
-          <li><strong>Innovación:</strong> adoptamos tecnología de vanguardia en cada servicio.</li>
-          <li><strong>Responsabilidad ambiental:</strong> reducimos el impacto en suelos y ecosistemas.</li>
-          <li><strong>Compromiso:</strong> acompañamos al productor en cada etapa del proceso.</li>
-          <li><strong>Transparencia:</strong> comunicación clara y datos verificables.</li>
-          <li><strong>Eficiencia:</strong> optimizamos recursos para maximizar resultados.</li>
-        </ul>
-      </div>
-
+      <div class="mvv-card"><h3>🎯 Misión</h3><p>Brindar servicios integrales con drones agrícolas.</p></div>
+      <div class="mvv-card"><h3>📈 Visión</h3><p>Convertirnos en referentes regionales en servicios con drones agrícolas.</p></div>
+      <div class="mvv-card"><h3>⭐ Valores</h3><ul>
+        <li><strong>Innovación:</strong> adoptamos tecnología de vanguardia en cada servicio.</li>
+        <li><strong>Responsabilidad ambiental:</strong> reducimos el impacto en suelos y ecosistemas.</li>
+        <li><strong>Compromiso:</strong> acompañamos al productor en cada etapa del proceso.</li>
+        <li><strong>Transparencia:</strong> comunicación clara y datos verificables.</li>
+        <li><strong>Eficiencia:</strong> optimizamos recursos para maximizar resultados.</li>
+      </ul></div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ USUARIOS ═══════════════════════════ -->
 <section id="usuarios">
   <div class="container">
     <p class="section-sub">Plataforma de gestión</p>
@@ -750,296 +297,231 @@
     <div class="divider"></div>
     <div class="user-layout">
 
-      <div class="form-card">
-        <h3>&#128100; Registrarse / Ingresar</h3>
-        <div class="form-group">
-          <label>Nombre completo</label>
-          <input type="text" placeholder="Ej: Carlos Rodríguez" />
+      <div class="form-card" id="panel-auth">
+        <div id="vista-login">
+          <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchTab('registrar')">Registrarse</button>
+            <button class="auth-tab" onclick="switchTab('ingresar')">Ingresar</button>
+          </div>
+          <div id="form-registrar">
+            <h3>👤 Crear cuenta</h3>
+            <div class="form-group"><label>Nombre completo</label><input type="text" id="reg-nombre" placeholder="Ej: Carlos Rodríguez" /></div>
+            <div class="form-group"><label>Correo electrónico</label><input type="email" id="reg-email" placeholder="correo@ejemplo.com" /></div>
+            <div class="form-group"><label>Contraseña</label><input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres" /></div>
+            <div class="form-group"><label>Tipo de productor</label>
+              <select id="reg-tipo"><option>Productor individual</option><option>Empresa agropecuaria</option><option>Ingeniero agrónomo</option><option>Contratista</option></select>
+            </div>
+            <div class="form-group"><label>Localidad</label><input type="text" id="reg-localidad" placeholder="Ej: Trenque Lauquen" /></div>
+            <button class="btn-verde" onclick="registrar()">Crear cuenta</button>
+            <p class="auth-status" id="reg-status"></p>
+          </div>
+          <div id="form-ingresar" style="display:none;">
+            <h3>🔑 Ingresar</h3>
+            <div class="form-group"><label>Correo electrónico</label><input type="email" id="login-email" placeholder="correo@ejemplo.com" /></div>
+            <div class="form-group"><label>Contraseña</label><input type="password" id="login-pass" placeholder="Tu contraseña" /></div>
+            <button class="btn-verde" onclick="ingresar()">Ingresar</button>
+            <p class="auth-status" id="login-status"></p>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Correo electrónico</label>
-          <input type="email" placeholder="correo@ejemplo.com" />
+        <div id="vista-cuenta" style="display:none;">
+          <h3>✅ Sesión activa</h3>
+          <p style="font-size:14px;color:#666;margin:12px 0 6px;">Bienvenido/a,</p>
+          <p id="usuario-nombre" style="font-size:16px;font-weight:700;color:var(--verde-oscuro);margin-bottom:20px;"></p>
+          <button class="btn-rojo" onclick="cerrarSesion()">Cerrar sesión</button>
         </div>
-        <div class="form-group">
-          <label>Tipo de productor</label>
-          <select>
-            <option>Productor individual</option>
-            <option>Empresa agropecuaria</option>
-            <option>Ingeniero agrónomo</option>
-            <option>Contratista</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Localidad</label>
-          <input type="text" placeholder="Ej: Trenque Lauquen, Buenos Aires" />
-        </div>
-        <button class="btn-verde" onclick="alert('Registro simulado — solo prototipo visual.')">Crear cuenta</button>
-        <p class="nota-demo">&#128274; Prototipo académico — sin almacenamiento de datos</p>
       </div>
 
       <div class="historial-card">
-        <h3>&#128203; Historial de servicios — <span style="font-weight:400;color:#666;font-size:15px;">Carlos Rodríguez</span></h3>
-
-        <div class="servicio-row">
-          <div class="servicio-row-header">
-            <strong>Lote Norte — Campo La Esperanza</strong>
-            <span class="badge-tipo">Pulverización</span>
-            <span class="badge-fecha">&#128197; 12/03/2025</span>
-          </div>
-          <div class="servicio-row-body">
-            <div class="lote-thumb">&#127807;</div>
-            <div class="mapa-simulado">
-              <div class="mapa-label">&#128506; Mapa del vuelo<br><small>Cobertura: 98.4%</small></div>
-            </div>
-            <div class="informe-box">
-              <p>
-                <strong>Superficie:</strong> 48 ha | <strong>Producto:</strong> herbicida soja<br>
-                <strong>Dosis:</strong> 1,5 L/ha | <strong>Vol. total:</strong> 72 L<br>
-                <strong>Eficiencia:</strong> 95% cobertura uniforme<br>
-                <strong>Observaciones:</strong> Viento ESE 12 km/h. Sin incidentes. Informe disponible en PDF.
-              </p>
-            </div>
+        <h3>📋 Historial de servicios</h3>
+        <div id="historial-contenido">
+          <div class="login-prompt">
+            <strong>Iniciá sesión para ver tu historial</strong>
+            Registrate o ingresá para acceder a tus servicios, mapas e informes.
           </div>
         </div>
-
-        <div class="servicio-row">
-          <div class="servicio-row-header">
-            <strong>Lote Sur — Campo El Progreso</strong>
-            <span class="badge-tipo" style="background:var(--tierra);">Mapeo NDVI</span>
-            <span class="badge-fecha">&#128197; 28/02/2025</span>
-          </div>
-          <div class="servicio-row-body">
-            <div class="lote-thumb">&#128248;</div>
-            <div class="mapa-simulado" style="background:linear-gradient(135deg,#d4e87a,#e8a050,#c84a4a);">
-              <div class="mapa-label">&#127758; Índice NDVI<br><small>Escala: 0.3–0.85</small></div>
-            </div>
-            <div class="informe-box">
-              <p>
-                <strong>Superficie:</strong> 62 ha | <strong>Dron:</strong> DJI Mavic 3M<br>
-                <strong>Resolución:</strong> 3.2 cm/px | <strong>Bandas:</strong> 5<br>
-                <strong>Hallazgos:</strong> Zona sur-este con estrés hídrico moderado (NDVI &lt; 0.45). 
-                Se recomienda riego complementario de 8 ha.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="servicio-row">
-          <div class="servicio-row-header">
-            <strong>Potrero Central — Estancia Don Marcos</strong>
-            <span class="badge-tipo" style="background:#185FA5;">Fertilización</span>
-            <span class="badge-fecha">&#128197; 10/01/2025</span>
-          </div>
-          <div class="servicio-row-body">
-            <div class="lote-thumb">&#9881;</div>
-            <div class="mapa-simulado" style="background:linear-gradient(135deg,#a8d8f0,#6eafd4);">
-              <div class="mapa-label">&#128200; Mapa de dosis<br><small>Variable rate</small></div>
-            </div>
-            <div class="informe-box">
-              <p>
-                <strong>Superficie:</strong> 35 ha | <strong>Producto:</strong> Urea granulada<br>
-                <strong>Dosis prom.:</strong> 60 kg/ha | <strong>Total:</strong> 2.100 kg<br>
-                <strong>Modalidad:</strong> Aplicación variable según mapa de suelos. 
-                Ahorro estimado: 18% vs. dosis uniforme.
-              </p>
-            </div>
-          </div>
-        </div>
-
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ CONTACTO ═══════════════════════════ -->
 <section id="contacto" style="background:var(--gris-claro);">
   <div class="container">
     <p class="section-sub">Comunicate con nosotros</p>
     <h2 class="section-title">Contacto</h2>
     <div class="divider"></div>
     <div class="contacto-grid">
-
       <div class="contacto-info">
         <h3>Datos de contacto</h3>
-        <div class="contacto-item">
-          <div class="contacto-icon">&#128231;</div>
-          <div>
-            <strong>Correo electrónico</strong>
-            <a href="mailto:agrojuancadrones@contactos.com.ar">agrojuancadrones@contactos.com.ar</a>
-          </div>
-        </div>
-        <div class="contacto-item">
-          <div class="contacto-icon">&#128222;</div>
-          <div>
-            <strong>Teléfono / WhatsApp</strong>
-            <p>2392 000000</p>
-          </div>
-        </div>
-        <div class="contacto-item">
-          <div class="contacto-icon">&#128205;</div>
-          <div>
-            <strong>Zona de cobertura</strong>
-            <p>Trenque Lauquen y zona de influencia, provincia de Buenos Aires</p>
-          </div>
-        </div>
-        <div class="contacto-item">
-          <div class="contacto-icon">&#128336;</div>
-          <div>
-            <strong>Horario de atención</strong>
-            <p>Lunes a viernes: 8:00 – 18:00 hs<br>Sábados: 8:00 – 13:00 hs</p>
-          </div>
-        </div>
+        <div class="contacto-item"><div class="contacto-icon">📧</div><div><strong>Correo electrónico</strong><a href="mailto:agrojuancadrones@contactos.com.ar">agrojuancadrones@contactos.com.ar</a></div></div>
+        <div class="contacto-item"><div class="contacto-icon">📞</div><div><strong>Teléfono / WhatsApp</strong><p>2392 000000</p></div></div>
+        <div class="contacto-item"><div class="contacto-icon">📍</div><div><strong>Zona de cobertura</strong><p>Trenque Lauquen y zona de influencia, provincia de Buenos Aires</p></div></div>
+        <div class="contacto-item"><div class="contacto-icon">🕐</div><div><strong>Horario de atención</strong><p>Lunes a viernes: 8:00 – 18:00 hs<br>Sábados: 8:00 – 13:00 hs</p></div></div>
       </div>
-
-      <!-- ═══ FORMULARIO CON FORMSPREE INTEGRADO ═══ -->
       <div class="consulta-card">
-        <h3>&#128172; Envianos una consulta</h3>
+        <h3>💬 Envianos una consulta</h3>
         <form id="form-contacto" action="https://formspree.io/f/mrednevd" method="POST">
-          <div class="form-group">
-            <label>Nombre completo</label>
-            <input type="text" name="nombre" placeholder="Tu nombre" required />
+          <div class="form-group"><label>Nombre completo</label><input type="text" name="nombre" placeholder="Tu nombre" required /></div>
+          <div class="form-group"><label>Correo electrónico</label><input type="email" name="email" placeholder="correo@ejemplo.com" required /></div>
+          <div class="form-group"><label>Teléfono (opcional)</label><input type="tel" name="telefono" placeholder="Ej: 2392 123456" /></div>
+          <div class="form-group"><label>Tipo de servicio de interés</label>
+            <select name="servicio"><option value="">— Seleccioná —</option><option>Pulverización</option><option>Siembra</option><option>Fertilización</option><option>Mapeo / Monitoreo NDVI</option><option>Otro / Consulta general</option></select>
           </div>
-          <div class="form-group">
-            <label>Correo electrónico</label>
-            <input type="email" name="email" placeholder="correo@ejemplo.com" required />
-          </div>
-          <div class="form-group">
-            <label>Teléfono (opcional)</label>
-            <input type="tel" name="telefono" placeholder="Ej: 2392 123456" />
-          </div>
-          <div class="form-group">
-            <label>Tipo de servicio de interés</label>
-            <select name="servicio">
-              <option value="">— Seleccioná —</option>
-              <option>Pulverización</option>
-              <option>Siembra</option>
-              <option>Fertilización</option>
-              <option>Mapeo / Monitoreo NDVI</option>
-              <option>Otro / Consulta general</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Tu consulta</label>
-            <textarea name="mensaje" rows="4" placeholder="Contanos sobre tu campo, superficie aproximada, cultivo y lo que necesitás…" style="resize:vertical;" required></textarea>
-          </div>
+          <div class="form-group"><label>Tu consulta</label><textarea name="mensaje" rows="4" placeholder="Contanos sobre tu campo, superficie aproximada, cultivo y lo que necesitás…" style="resize:vertical;" required></textarea></div>
           <button type="submit" class="btn-verde">Enviar consulta</button>
-          <p id="form-status" style="text-align:center; margin-top:12px; font-size:14px; font-weight:600; color:var(--verde-medio); min-height:20px;"></p>
+          <p id="form-status" style="text-align:center;margin-top:12px;font-size:14px;font-weight:600;color:var(--verde-medio);min-height:20px;"></p>
         </form>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
 <footer>
   <p><strong>AgroJuanca Drones</strong> &nbsp;|&nbsp; Servicio Integral con Drones Agrícolas</p>
-  <p>Trenque Lauquen, Buenos Aires, Argentina &nbsp;&#183;&nbsp; 2392 000000 &nbsp;&#183;&nbsp; agrojuancadrones@contactos.com.ar</p>
-  <p style="margin-top:10px; font-size:11px; opacity:0.55;">
-    Prototipo desarrollado para tesis académica &mdash; &copy; 2025 AgroJuanca Drones. Todos los derechos reservados.
-  </p>
+  <p>Trenque Lauquen, Buenos Aires, Argentina &nbsp;·&nbsp; 2392 000000 &nbsp;·&nbsp; agrojuancadrones@contactos.com.ar</p>
+  <p style="margin-top:10px;font-size:11px;opacity:0.55;">Prototipo desarrollado para tesis académica — © 2025 AgroJuanca Drones.</p>
 </footer>
 
 <script>
-  // ─── SMOOTH SCROLL ───
-  document.querySelectorAll('nav a, .hero-btn').forEach(link => {
-    link.addEventListener('click', function(e) {
-      const href = this.getAttribute('href');
-      if (href && href.startsWith('#')) {
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
+const SUPABASE_URL = 'https://wyqywwfugiqfhqxmosxy.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_PdSCXAF1_50AsvDRoXTSHw_YY-pxzfj';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // ─── FORMSPREE ───
-  const formContacto = document.getElementById('form-contacto');
-  const formStatus   = document.getElementById('form-status');
-  if (formContacto) {
-    formContacto.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const btnSubmit = formContacto.querySelector('button[type="submit"]');
-      btnSubmit.disabled = true;
-      btnSubmit.textContent = 'Enviando…';
-      formStatus.textContent = '';
-      try {
-        const response = await fetch('https://formspree.io/f/mrednevd', {
-          method: 'POST',
-          body: new FormData(formContacto),
-          headers: { 'Accept': 'application/json' }
-        });
-        if (response.ok) {
-          formStatus.style.color = 'var(--verde-medio)';
-          formStatus.textContent = '✅ ¡Consulta enviada! Te respondemos a la brevedad.';
-          formContacto.reset();
-        } else {
-          formStatus.style.color = '#c0392b';
-          formStatus.textContent = '❌ Hubo un error. Intentá de nuevo o escribinos por WhatsApp.';
-        }
-      } catch (err) {
-        formStatus.style.color = '#c0392b';
-        formStatus.textContent = '❌ Sin conexión. Intentá de nuevo más tarde.';
-      }
-      btnSubmit.disabled = false;
-      btnSubmit.textContent = 'Enviar consulta';
-    });
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active',(i===0&&tab==='registrar')||(i===1&&tab==='ingresar')));
+  document.getElementById('form-registrar').style.display = tab==='registrar'?'block':'none';
+  document.getElementById('form-ingresar').style.display  = tab==='ingresar'?'block':'none';
+}
+
+async function registrar() {
+  const nombre=document.getElementById('reg-nombre').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const pass=document.getElementById('reg-pass').value;
+  const tipo=document.getElementById('reg-tipo').value;
+  const localidad=document.getElementById('reg-localidad').value.trim();
+  const status=document.getElementById('reg-status');
+  if(!nombre||!email||!pass){status.style.color='#c0392b';status.textContent='Completá todos los campos obligatorios.';return;}
+  status.style.color='#888';status.textContent='Creando cuenta…';
+  const {data,error}=await sb.auth.signUp({email,password:pass});
+  if(error){status.style.color='#c0392b';status.textContent='Error: '+error.message;return;}
+  await sb.from('perfiles').insert({id:data.user.id,nombre,email,tipo_productor:tipo,localidad});
+  status.style.color='var(--verde-medio)';status.textContent='✅ Cuenta creada. Revisá tu email para confirmar.';
+}
+
+async function ingresar() {
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  const status=document.getElementById('login-status');
+  status.style.color='#888';status.textContent='Ingresando…';
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){status.style.color='#c0392b';status.textContent='Error: '+error.message;return;}
+  status.textContent='';
+  actualizarUI(data.user);
+}
+
+async function cerrarSesion() {
+  await sb.auth.signOut();
+  document.getElementById('vista-login').style.display='block';
+  document.getElementById('vista-cuenta').style.display='none';
+  document.getElementById('historial-contenido').innerHTML='<div class="login-prompt"><strong>Iniciá sesión para ver tu historial</strong>Registrate o ingresá para acceder a tus servicios, mapas e informes.</div>';
+}
+
+async function actualizarUI(user) {
+  document.getElementById('vista-login').style.display='none';
+  document.getElementById('vista-cuenta').style.display='block';
+  const {data:perfil}=await sb.from('perfiles').select('nombre').eq('id',user.id).single();
+  document.getElementById('usuario-nombre').textContent=perfil?.nombre||user.email;
+  cargarHistorial(user.id);
+}
+
+async function cargarHistorial(userId) {
+  const cont=document.getElementById('historial-contenido');
+  cont.innerHTML='<p style="color:#888;font-size:14px;padding:20px;">Cargando historial…</p>';
+  const {data:servicios,error}=await sb.from('servicios').select('*').eq('usuario_id',userId).order('fecha',{ascending:false});
+  if(error||!servicios||servicios.length===0){
+    cont.innerHTML='<div class="historial-vacio">📋 No hay servicios registrados aún.<br><small>Cuando realices un servicio, aparecerá aquí con imágenes e informes.</small></div>';
+    return;
   }
+  const colores={'Pulverización':'var(--verde-claro)','Mapeo NDVI':'var(--tierra)','Fertilización':'#185FA5','Siembra':'#2E7D32'};
+  cont.innerHTML=servicios.map(s=>`
+    <div class="servicio-row">
+      <div class="servicio-row-header">
+        <strong>${s.lote||'Sin nombre'}</strong>
+        <span class="badge-tipo" style="background:${colores[s.tipo]||'var(--verde-claro)'}">${s.tipo}</span>
+        <span class="badge-fecha">📅 ${s.fecha?new Date(s.fecha).toLocaleDateString('es-AR'):''}</span>
+      </div>
+      <div class="servicio-row-body">
+        <div class="lote-thumb">${s.imagen_url?`<img src="${s.imagen_url}" alt="Foto lote" />`:'🌿'}</div>
+        <div class="mapa-box">${s.mapa_url?`<img src="${s.mapa_url}" alt="Mapa" />`:'<div style="font-size:11px;font-weight:700;color:var(--verde-oscuro);text-align:center;">🗺️ Sin mapa</div>'}</div>
+        <div class="informe-box">
+          <p>
+            ${s.superficie?`<strong>Superficie:</strong> ${s.superficie}<br>`:''}
+            ${s.producto?`<strong>Producto:</strong> ${s.producto}<br>`:''}
+            ${s.dosis?`<strong>Dosis:</strong> ${s.dosis}<br>`:''}
+            ${s.volumen?`<strong>Vol. total:</strong> ${s.volumen}<br>`:''}
+            ${s.observaciones?`<strong>Obs.:</strong> ${s.observaciones}`:''}
+          </p>
+          ${s.pdf_url?`<a class="pdf-link" href="${s.pdf_url}" target="_blank">📄 Ver informe PDF</a>`:''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
 
-  // ─── CARRUSEL ───
-  (function () {
-    const track   = document.getElementById('carrusel-track');
-    const counter = document.getElementById('carrusel-counter');
-    const dots    = document.querySelectorAll('.carrusel-dot');
-    const thumbs  = document.querySelectorAll('.thumb-btn');
-    const btnPrev = document.getElementById('btn-prev');
-    const btnNext = document.getElementById('btn-next');
-    const total   = 4;
-    let current   = 0;
-    let autoTimer = null;
+sb.auth.getSession().then(({data:{session}})=>{ if(session?.user) actualizarUI(session.user); });
+sb.auth.onAuthStateChange((_,session)=>{ if(session?.user) actualizarUI(session.user); });
 
-    function goTo(idx) {
-      current = (idx + total) % total;
-      track.style.transform = `translateX(-${current * 100}%)`;
-      counter.textContent = `${current + 1} / ${total}`;
-      dots.forEach((d, i)   => d.classList.toggle('active', i === current));
-      thumbs.forEach((t, i) => t.classList.toggle('active', i === current));
-    }
+const formContacto=document.getElementById('form-contacto');
+const formStatus=document.getElementById('form-status');
+if(formContacto){
+  formContacto.addEventListener('submit',async function(e){
+    e.preventDefault();
+    const btn=formContacto.querySelector('button[type="submit"]');
+    btn.disabled=true;btn.textContent='Enviando…';
+    try{
+      const res=await fetch('https://formspree.io/f/mrednevd',{method:'POST',body:new FormData(formContacto),headers:{'Accept':'application/json'}});
+      if(res.ok){formStatus.style.color='var(--verde-medio)';formStatus.textContent='✅ Consulta enviada. Te respondemos a la brevedad.';formContacto.reset();}
+      else{formStatus.style.color='#c0392b';formStatus.textContent='❌ Error al enviar. Intentá por WhatsApp.';}
+    }catch{formStatus.style.color='#c0392b';formStatus.textContent='❌ Sin conexión. Intentá más tarde.';}
+    btn.disabled=false;btn.textContent='Enviar consulta';
+  });
+}
 
-    btnPrev.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
-    btnNext.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
-    dots.forEach(dot => { dot.addEventListener('click', () => { goTo(+dot.dataset.idx); resetAuto(); }); });
-    thumbs.forEach(thumb => { thumb.addEventListener('click', () => { goTo(+thumb.dataset.idx); resetAuto(); }); });
+document.querySelectorAll('nav a, .hero-btn').forEach(link=>{
+  link.addEventListener('click',function(e){
+    const href=this.getAttribute('href');
+    if(href&&href.startsWith('#')){e.preventDefault();document.querySelector(href)?.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
 
-    let touchStartX = null;
-    track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend', e => {
-      if (touchStartX === null) return;
-      const diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) { goTo(current + (diff > 0 ? 1 : -1)); resetAuto(); }
-      touchStartX = null;
-    });
-
-    track.parentElement.addEventListener('wheel', e => {
-      e.preventDefault();
-      goTo(current + (e.deltaX > 0 || e.deltaY > 0 ? 1 : -1));
-      resetAuto();
-    }, { passive: false });
-
-    function startAuto() { autoTimer = setInterval(() => goTo(current + 1), 5000); }
-    function resetAuto() { clearInterval(autoTimer); startAuto(); }
-
-    track.parentElement.addEventListener('mouseenter', () => clearInterval(autoTimer));
-    track.parentElement.addEventListener('mouseleave', startAuto);
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft')  { goTo(current - 1); resetAuto(); }
-      if (e.key === 'ArrowRight') { goTo(current + 1); resetAuto(); }
-    });
-
-    goTo(0);
-    startAuto();
-  })();
+(function(){
+  const track=document.getElementById('carrusel-track');
+  const counter=document.getElementById('carrusel-counter');
+  const dots=document.querySelectorAll('.carrusel-dot');
+  const thumbs=document.querySelectorAll('.thumb-btn');
+  const total=4;let current=0;let timer=null;
+  function goTo(idx){
+    current=(idx+total)%total;
+    track.style.transform=`translateX(-${current*100}%)`;
+    counter.textContent=`${current+1} / ${total}`;
+    dots.forEach((d,i)=>d.classList.toggle('active',i===current));
+    thumbs.forEach((t,i)=>t.classList.toggle('active',i===current));
+  }
+  document.getElementById('btn-prev').addEventListener('click',()=>{goTo(current-1);reset();});
+  document.getElementById('btn-next').addEventListener('click',()=>{goTo(current+1);reset();});
+  dots.forEach(d=>d.addEventListener('click',()=>{goTo(+d.dataset.idx);reset();}));
+  thumbs.forEach(t=>t.addEventListener('click',()=>{goTo(+t.dataset.idx);reset();}));
+  let tx=null;
+  track.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',e=>{if(tx===null)return;const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>40){goTo(current+(d>0?1:-1));reset();}tx=null;});
+  function start(){timer=setInterval(()=>goTo(current+1),5000);}
+  function reset(){clearInterval(timer);start();}
+  track.parentElement.addEventListener('mouseenter',()=>clearInterval(timer));
+  track.parentElement.addEventListener('mouseleave',start);
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){goTo(current-1);reset();}if(e.key==='ArrowRight'){goTo(current+1);reset();}});
+  goTo(0);start();
+})();
 </script>
 </body>
 </html>
