@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Cuenta — AgroJuanca Drones</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --verde-oscuro: #27500A; --verde-medio: #3B6D11; --verde-claro: #639922;
+      --verde-suave: #C0DD97; --verde-palido: #EAF3DE; --tierra: #8B6914;
+      --blanco: #FFFFFF; --gris-claro: #F5F5F2; --gris-texto: #444441;
+      --borde: rgba(59, 109, 17, 0.2);
+    }
+    body { font-family: 'Segoe UI', Arial, sans-serif; color: var(--gris-texto); background: var(--gris-claro); line-height: 1.7; font-size: 16px; min-height: 100vh; }
+
+    /* HEADER */
+    header { background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 60%, var(--verde-claro) 100%); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
+    .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 18px; padding: 16px 24px; }
+    .header-inner img { height: 64px; width: 64px; object-fit: contain; border-radius: 10px; background: rgba(255,255,255,0.15); padding: 4px; }
+    .logo-placeholder { height: 64px; width: 64px; border-radius: 10px; background: rgba(255,255,255,0.2); border: 2px dashed rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; font-size: 11px; color: rgba(255,255,255,0.7); text-align: center; flex-shrink: 0; }
+    .header-text h1 { color: #fff; font-size: 26px; font-weight: 700; }
+    .header-text p { color: rgba(255,255,255,0.82); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+    .header-back { margin-left: auto; }
+    .header-back a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 13px; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); transition: background 0.2s; white-space: nowrap; }
+    .header-back a:hover { background: rgba(255,255,255,0.2); }
+
+    /* MAIN LAYOUT */
+    .main-wrap { max-width: 1100px; margin: 40px auto; padding: 0 24px 60px; display: grid; grid-template-columns: 300px 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 800px) { .main-wrap { grid-template-columns: 1fr; } }
+
+    /* PANEL AUTH */
+    .panel-card { background: var(--blanco); border: 1px solid var(--borde); border-radius: 14px; padding: 28px 24px; }
+    .panel-card h3 { font-size: 18px; color: var(--verde-oscuro); margin-bottom: 18px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; color: var(--verde-oscuro); margin-bottom: 5px; font-weight: 600; }
+    .form-group input, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid var(--borde); border-radius: 8px; font-size: 14px; outline: none; transition: border 0.2s; background: var(--blanco); color: var(--gris-texto); }
+    .form-group input:focus, .form-group select:focus { border-color: var(--verde-claro); }
+    .btn-verde { width: 100%; background: var(--verde-medio); color: #fff; border: none; border-radius: 8px; padding: 11px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .btn-verde:hover { background: var(--verde-oscuro); }
+    .btn-rojo { width: 100%; background: #c0392b; color: #fff; border: none; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+    .auth-status { font-size: 12px; text-align: center; margin-top: 10px; min-height: 18px; font-weight: 600; }
+    .auth-tabs { display: flex; margin-bottom: 20px; border-radius: 8px; overflow: hidden; border: 1px solid var(--borde); }
+    .auth-tab { flex: 1; padding: 10px; background: var(--gris-claro); border: none; cursor: pointer; font-size: 14px; font-weight: 600; color: #888; transition: all 0.2s; }
+    .auth-tab.active { background: var(--verde-medio); color: #fff; }
+    .usuario-nombre { font-size: 20px; font-weight: 700; color: var(--verde-oscuro); margin: 8px 0 20px; }
+    .usuario-email { font-size: 13px; color: #888; margin-bottom: 20px; }
+
+    /* HISTORIAL */
+    .historial-card { background: var(--blanco); border: 1px solid var(--borde); border-radius: 14px; padding: 24px; }
+    .historial-card h3 { font-size: 22px; color: var(--verde-oscuro); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+    .servicio-row { border: 1px solid var(--borde); border-radius: 12px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 2px 8px rgba(59,109,17,0.06); }
+    .servicio-row-header { background: var(--verde-palido); padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .servicio-row-header strong { color: var(--verde-oscuro); font-size: 15px; }
+    .badge-tipo { background: var(--verde-claro); color: #fff; font-size: 11px; padding: 4px 14px; border-radius: 20px; font-weight: 600; }
+    .badge-fecha { font-size: 12px; color: var(--verde-medio); font-weight: 600; }
+    .servicio-row-body { padding: 16px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .servicio-row-body { grid-template-columns: 1fr; } }
+
+    /* IMÁGENES CON ZOOM */
+    .img-wrap { position: relative; border-radius: 10px; overflow: hidden; cursor: zoom-in; }
+    .img-wrap img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.2s; }
+    .img-wrap:hover img { transform: scale(1.03); }
+    .img-wrap .img-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(15,40,5,0.65); color: #fff; font-size: 11px; font-weight: 700; padding: 6px 10px; text-align: center; }
+    .img-placeholder { width: 100%; height: 200px; border-radius: 10px; background: linear-gradient(135deg, var(--verde-palido), var(--verde-suave)); display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--verde-medio); }
+
+    .informe-box { padding: 8px 0; }
+    .informe-box p { font-size: 13px; color: #555; line-height: 1.9; }
+    .informe-box strong { color: var(--verde-oscuro); }
+    .pdf-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; background: var(--verde-palido); color: var(--verde-oscuro); font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: 20px; text-decoration: none; border: 1px solid var(--borde); transition: background 0.2s; }
+    .pdf-link:hover { background: var(--verde-suave); }
+
+    .historial-vacio { text-align: center; padding: 60px 20px; color: #999; font-size: 15px; }
+    .historial-vacio .big-icon { font-size: 48px; margin-bottom: 16px; }
+    .login-prompt { text-align: center; padding: 60px 20px; color: #888; }
+    .login-prompt .big-icon { font-size: 48px; margin-bottom: 16px; }
+    .login-prompt strong { color: var(--verde-oscuro); display: block; font-size: 20px; margin-bottom: 8px; }
+
+    /* LIGHTBOX */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 10px; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+    .lightbox-close { position: absolute; top: 20px; right: 28px; color: #fff; font-size: 36px; cursor: pointer; font-weight: 300; line-height: 1; }
+    .lightbox-close:hover { color: var(--verde-suave); }
+
+    /* FOOTER */
+    footer { background: var(--verde-oscuro); color: rgba(255,255,255,0.75); text-align: center; padding: 24px; font-size: 13px; margin-top: 40px; }
+    footer strong { color: var(--verde-suave); }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <img src="logo.JPG" alt="Logo AgroJuanca Drones" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+    <div class="logo-placeholder" style="display:none;">LOGO</div>
+    <div class="header-text">
+      <h1>AgroJuanca Drones</h1>
+      <p>Mi Cuenta &amp; Historial</p>
+    </div>
+    <div class="header-back">
+      <a href="index.html">← Volver al sitio</a>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <!-- PANEL AUTH -->
+  <div class="panel-card" id="panel-auth">
+
+    <!-- Vista no logueado -->
+    <div id="vista-login">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('registrar')">Registrarse</button>
+        <button class="auth-tab" onclick="switchTab('ingresar')">Ingresar</button>
+      </div>
+
+      <div id="form-registrar">
+        <h3>👤 Crear cuenta</h3>
+        <div class="form-group"><label>Nombre completo</label><input type="text" id="reg-nombre" placeholder="Ej: Carlos Rodríguez" /></div>
+        <div class="form-group"><label>Correo electrónico</label><input type="email" id="reg-email" placeholder="correo@ejemplo.com" /></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres" /></div>
+        <div class="form-group"><label>Tipo de productor</label>
+          <select id="reg-tipo">
+            <option>Productor individual</option>
+            <option>Empresa agropecuaria</option>
+            <option>Ingeniero agrónomo</option>
+            <option>Contratista</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Localidad</label><input type="text" id="reg-localidad" placeholder="Ej: Trenque Lauquen" /></div>
+        <button class="btn-verde" onclick="registrar()">Crear cuenta</button>
+        <p class="auth-status" id="reg-status"></p>
+      </div>
+
+      <div id="form-ingresar" style="display:none;">
+        <h3>🔑 Ingresar</h3>
+        <div class="form-group"><label>Correo electrónico</label><input type="email" id="login-email" placeholder="correo@ejemplo.com" /></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="login-pass" placeholder="Tu contraseña" /></div>
+        <button class="btn-verde" onclick="ingresar()">Ingresar</button>
+        <p class="auth-status" id="login-status"></p>
+      </div>
+    </div>
+
+    <!-- Vista logueado -->
+    <div id="vista-cuenta" style="display:none;">
+      <h3>✅ Sesión activa</h3>
+      <p style="font-size:13px;color:#888;margin-top:12px;">Bienvenido/a,</p>
+      <p class="usuario-nombre" id="usuario-nombre"></p>
+      <p class="usuario-email" id="usuario-email"></p>
+      <button class="btn-rojo" onclick="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <!-- HISTORIAL -->
+  <div class="historial-card">
+    <h3>📋 Historial de servicios</h3>
+    <div id="historial-contenido">
+      <div class="login-prompt">
+        <div class="big-icon">🌾</div>
+        <strong>Iniciá sesión para ver tu historial</strong>
+        Accedé a tus servicios, mapas e informes PDF.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="cerrarLightbox()">
+  <span class="lightbox-close" onclick="cerrarLightbox()">×</span>
+  <img id="lightbox-img" src="" alt="Imagen ampliada" onclick="event.stopPropagation()" />
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>AgroJuanca Drones</strong> &nbsp;|&nbsp; Servicio Integral con Drones Agrícolas</p>
+  <p>Trenque Lauquen, Buenos Aires, Argentina &nbsp;·&nbsp; 2392 000000</p>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://wyqywwfugiqfhqxmosxy.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_PdSCXAF1_50AsvDRoXTSHw_YY-pxzfj';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active',(i===0&&tab==='registrar')||(i===1&&tab==='ingresar')));
+  document.getElementById('form-registrar').style.display = tab==='registrar'?'block':'none';
+  document.getElementById('form-ingresar').style.display  = tab==='ingresar'?'block':'none';
+}
+
+async function registrar() {
+  const nombre=document.getElementById('reg-nombre').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const pass=document.getElementById('reg-pass').value;
+  const tipo=document.getElementById('reg-tipo').value;
+  const localidad=document.getElementById('reg-localidad').value.trim();
+  const status=document.getElementById('reg-status');
+  if(!nombre||!email||!pass){status.style.color='#c0392b';status.textContent='Completá todos los campos.';return;}
+  status.style.color='#888';status.textContent='Creando cuenta…';
+  const {data,error}=await sb.auth.signUp({email,password:pass});
+  if(error){status.style.color='#c0392b';status.textContent='Error: '+error.message;return;}
+  await sb.from('perfiles').insert({id:data.user.id,nombre,email,tipo_productor:tipo,localidad});
+  status.style.color='var(--verde-medio)';status.textContent='✅ Cuenta creada. Revisá tu email para confirmar.';
+}
+
+async function ingresar() {
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  const status=document.getElementById('login-status');
+  status.style.color='#888';status.textContent='Ingresando…';
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){status.style.color='#c0392b';status.textContent='Error: '+error.message;return;}
+  status.textContent='';
+  actualizarUI(data.user);
+}
+
+async function cerrarSesion() {
+  await sb.auth.signOut();
+  document.getElementById('vista-login').style.display='block';
+  document.getElementById('vista-cuenta').style.display='none';
+  document.getElementById('historial-contenido').innerHTML='<div class="login-prompt"><div class="big-icon">🌾</div><strong>Iniciá sesión para ver tu historial</strong>Accedé a tus servicios, mapas e informes PDF.</div>';
+}
+
+async function actualizarUI(user) {
+  document.getElementById('vista-login').style.display='none';
+  document.getElementById('vista-cuenta').style.display='block';
+  const {data:perfil}=await sb.from('perfiles').select('nombre').eq('id',user.id).single();
+  document.getElementById('usuario-nombre').textContent=perfil?.nombre||user.email;
+  document.getElementById('usuario-email').textContent=user.email;
+  cargarHistorial(user.id);
+}
+
+async function cargarHistorial(userId) {
+  const cont=document.getElementById('historial-contenido');
+  cont.innerHTML='<p style="color:#888;font-size:14px;padding:20px;">Cargando historial…</p>';
+  const {data:servicios,error}=await sb.from('servicios').select('*').eq('usuario_id',userId).order('fecha',{ascending:false});
+  if(error||!servicios||servicios.length===0){
+    cont.innerHTML='<div class="historial-vacio"><div class="big-icon">📋</div>No hay servicios registrados aún.<br><small>Cuando realices un servicio aparecerá aquí con imágenes e informes.</small></div>';
+    return;
+  }
+  const colores={'Pulverización':'var(--verde-claro)','Mapeo NDVI':'var(--tierra)','Fertilización':'#185FA5','Siembra':'#2E7D32'};
+  cont.innerHTML=servicios.map(s=>`
+    <div class="servicio-row">
+      <div class="servicio-row-header">
+        <strong>${s.lote||'Sin nombre'}</strong>
+        <span class="badge-tipo" style="background:${colores[s.tipo]||'var(--verde-claro)'}">${s.tipo}</span>
+        <span class="badge-fecha">📅 ${s.fecha?new Date(s.fecha).toLocaleDateString('es-AR'):''}</span>
+      </div>
+      <div class="servicio-row-body">
+        <div>
+          ${s.imagen_url
+            ? `<div class="img-wrap" onclick="abrirLightbox('${s.imagen_url}')"><img src="${s.imagen_url}" alt="Foto lote" /><div class="img-label">📸 Foto del lote — clic para ampliar</div></div>`
+            : `<div class="img-placeholder">🌿</div>`}
+          ${s.mapa_url
+            ? `<div class="img-wrap" style="margin-top:12px;" onclick="abrirLightbox('${s.mapa_url}')"><img src="${s.mapa_url}" alt="Mapa" /><div class="img-label">🗺️ Mapa del vuelo — clic para ampliar</div></div>`
+            : ''}
+        </div>
+        <div class="informe-box">
+          <p>
+            ${s.superficie?`<strong>Superficie:</strong> ${s.superficie}<br>`:''}
+            ${s.producto?`<strong>Producto:</strong> ${s.producto}<br>`:''}
+            ${s.dosis?`<strong>Dosis:</strong> ${s.dosis}<br>`:''}
+            ${s.volumen?`<strong>Vol. total:</strong> ${s.volumen}<br>`:''}
+            ${s.observaciones?`<strong>Observaciones:</strong> ${s.observaciones}`:''}
+          </p>
+          ${s.pdf_url?`<a class="pdf-link" href="${s.pdf_url}" target="_blank">📄 Ver informe PDF</a>`:''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function abrirLightbox(url) {
+  document.getElementById('lightbox-img').src=url;
+  document.getElementById('lightbox').classList.add('open');
+}
+function cerrarLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightbox-img').src='';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') cerrarLightbox(); });
+
+sb.auth.getSession().then(({data:{session}})=>{ if(session?.user) actualizarUI(session.user); });
+sb.auth.onAuthStateChange((_,session)=>{ if(session?.user) actualizarUI(session.user); });
+</script>
+</body>
+</html>
